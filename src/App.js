@@ -2,22 +2,76 @@ import './App.css';
 import React, { useState, useEffect } from 'react'
 import KillEntry from './KillEntry'
 import PointEntry from './PointEntry'
-import { KillEvent, PointEvent, EventType } from './PointEvent';
+import { KillEvent, EventType, GenericEvents } from './PointEvent';
+
+const block2 = "Block II"
+const p226 = "P226"
 
 const pool = [
-  new KillEvent("Block II", "n00bslayer3000"),
+  GenericEvents.SquadSpawnOnYou,
   [
-    new PointEvent("Headshot Bonus", 25),
-    new PointEvent("Squad Order Bonus", 100),
-    new PointEvent("Savior Bonus", 25),
-    new PointEvent("Multi Kill", 30),
+    GenericEvents.SaviorBonus,
+    new KillEvent(block2, "n00bslay3r"),
   ],
   [
-    new KillEvent("Block II", "the_schnitzle"),
-    new PointEvent("Payback", 50),
-    new PointEvent("Squad Wipe", 50),
+    GenericEvents.Payback,
+    GenericEvents.SquadWipe,
+    new KillEvent(block2, "gurkenwasser"),
   ],
-  new PointEvent("Squad Spawn on you", 25),
+  [
+    GenericEvents.KillStreakStopped,
+    new KillEvent(p226, "sn1perdude"),
+  ],
+  [
+    GenericEvents.KillStreakStopped,
+    new KillEvent(p226, "elastigirl"),
+  ],
+  [
+    GenericEvents.HeadshotBonus,
+    GenericEvents.AvengerBonus,
+    GenericEvents.Multikill,
+    new KillEvent(p226, "campernudel"),
+  ],
+  [
+    GenericEvents.AvengerBonus,
+    GenericEvents.Multikill,
+    new KillEvent(p226, "hakunamatata"),
+  ],
+  [
+    GenericEvents.SquadWipe,
+    GenericEvents.Multikill,
+    GenericEvents.KillStreakStopped,
+    new KillEvent(p226, "pumbathebear"),
+  ],
+  [
+    new KillEvent(block2, "shotgunguy"),
+  ],
+  [
+    GenericEvents.Payback,
+    GenericEvents.Multikill,
+    new KillEvent(block2, "friendofshotty"),
+  ],
+  [
+    GenericEvents.Multikill,
+    new KillEvent(block2, "herbärt05"),
+  ],
+  [
+    new KillEvent(block2, "rusherman"),
+  ],
+  [
+    GenericEvents.HeadshotBonus,
+    new KillEvent(block2, "campersau"),
+  ],
+  [
+    GenericEvents.HeadshotBonus,
+    GenericEvents.Multikill,
+    new KillEvent(block2, "sn1per_rolf"),
+  ],
+  [
+    GenericEvents.SquadOrderBonus,
+    GenericEvents.SquadWipe,
+    new KillEvent(block2, "PeterDerMetzger"),
+  ],
 ]
 
 const itemDisappearTime = 8000
@@ -61,12 +115,12 @@ function App() {
   return (
     <div className="App">
       <button onClick={addItem}>next</button>
-      <div className="flex row">
+      <div className="flex row point-feed">
         <div className="flex col items-end">
           {
             items.map(item => {
               switch (item.type) {
-                case EventType.Generic: return <PointEntry key={item.key} item={item} disappearTime={itemDisappearTime} onHide={remove} />
+                default: return <PointEntry key={item.key} item={item} disappearTime={itemDisappearTime} onHide={remove} />
                 case EventType.Kill: return <KillEntry key={item.key} item={item} disappearTime={itemDisappearTime} onHide={remove} />
               }
             })
@@ -74,7 +128,7 @@ function App() {
         </div>
         
         {
-          items.length > 0 && (
+          items.length > 1 && (
             <div key={1000 + items.length} className="entry large sum">
               {items.map(i => i.points).reduce((prev, val) => prev + val)}
             </div>

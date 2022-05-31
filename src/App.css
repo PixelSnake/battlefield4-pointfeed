@@ -129,6 +129,7 @@
 }
 
 .sum {
+  height: 64px;
   animation: popUp 200ms linear;
 }
 
@@ -138,9 +139,32 @@
   background-size: contain;
   width: 32px;
   height: 32px;
+  margin-top: 4px;
+}
+.entry.small .arrow {
+  margin-top: 0;
 }
 
 .red {
   color: #FF7F4A;
   text-shadow: 0 0 3px #FF8E00;
+}
+
+.player-name {
+  text-transform: none;
+}
+
+.point-feed {
+  position: relative;
+}
+
+.point-feed:after {
+  content: ' ';
+  position: absolute;
+  background: linear-gradient(to top, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 90%);
+  top: 0;
+  left: 0;
+  width: 300%;
+  height: 400px;
+  z-index: 1000;
 }
