@@ -2,7 +2,9 @@
 
 # What is this?
 
-A React app that recreates a Battlefield 4 point feed, for use in video editing or whatever.
+**STILL WIP**
+
+A React app that recreates a Battlefield 4 point feed, for use in video editing or whatever. It includes all the original animations.
 
 ## Adding the purista font
 
