@@ -1,3 +1,5 @@
+![](resources/example.png)
+
 # What is this?
 
 A React app that recreates a Battlefield 4 point feed, for use in video editing or whatever.

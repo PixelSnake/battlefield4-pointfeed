@@ -10,7 +10,7 @@ const TYPES = {
 const pool = [
   {
     type: TYPES.KILL,
-    enemy: 'arne ist doof',
+    enemy: 'n00bslayer3000',
     points: 100,
     weapon: 'BLOCK II'
   },
