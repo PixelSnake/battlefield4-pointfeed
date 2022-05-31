@@ -29,8 +29,10 @@
   color: white;
   font-size: 30px;
   text-shadow: 0 0 3px white;
+  text-transform: uppercase;
 
   animation: entryIn 200ms linear;
+  transition: opacity 200ms;
 }
 .entry.small {
   font-size: 24px;
@@ -52,6 +54,8 @@
 
   animation: entryInMask 400ms linear;
   animation-delay: 200ms;
+
+  opacity: 1;
 }
 
 @keyframes entryInMask {
@@ -80,6 +84,10 @@
 .entry>span:not(.noanim), .entry .arrow {
   animation: popUp 200ms linear;
   animation-delay: 200ms;
+}
+
+.entry.hidden {
+  opacity: 0;
 }
 
 @keyframes popUp {

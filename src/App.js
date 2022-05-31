@@ -1,67 +1,31 @@
 import './App.css';
 import React, { useState, useEffect } from 'react'
 import KillEntry from './KillEntry'
-
-const TYPES = {
-  KILL: 'KILL',
-  GENERIC: 'GENERIC'
-}
+import PointEntry from './PointEntry'
+import { KillEvent, PointEvent, EventType } from './PointEvent';
 
 const pool = [
-  {
-    type: TYPES.KILL,
-    enemy: 'n00bslayer3000',
-    points: 100,
-    weapon: 'BLOCK II'
-  },
+  new KillEvent("Block II", "n00bslayer3000"),
   [
-    {
-      type: TYPES.GENERIC,
-      message: 'HEADSHOT BONUS',
-      points: 25
-    },
-    {
-      type: TYPES.GENERIC,
-      message: 'SQUAD ORDER BONUS',
-      points: 100
-    },
-    {
-      type: TYPES.GENERIC,
-      message: 'SAVIOR BONUS',
-      points: 25
-    },
-    {
-      type: TYPES.GENERIC,
-      message: 'MULTI KILL',
-      points: 30
-    },
+    new PointEvent("Headshot Bonus", 25),
+    new PointEvent("Squad Order Bonus", 100),
+    new PointEvent("Savior Bonus", 25),
+    new PointEvent("Multi Kill", 30),
   ],
   [
-    {
-      type: TYPES.KILL,
-      enemy: 'the_schnitzle',
-      points: 100,
-      weapon: 'BLOCK II'
-    },
-    {
-      type: TYPES.GENERIC,
-      message: 'PAYBACK',
-      points: 50
-    },
-    {
-      type: TYPES.GENERIC,
-      message: 'SQUAD WIPE',
-      points: 50
-    },
+    new KillEvent("Block II", "the_schnitzle"),
+    new PointEvent("Payback", 50),
+    new PointEvent("Squad Wipe", 50),
   ],
-  {
-    type: TYPES.GENERIC,
-    message: 'SQUAD SPAWN ON YOU',
-    points: 25
-  },
+  new PointEvent("Squad Spawn on you", 25),
 ]
 
+const itemDisappearTime = 8000
+let lastEventTime = 0
+let toRemove = []
+
 function App() {
+  const [keyCounter, setKeyCounter] = useState(0)
   const [items, setItems] = useState([])
   const [poolIndex, setPoolIndex] = useState(0)
 
@@ -69,16 +33,29 @@ function App() {
     const next = pool[poolIndex]
 
     if (Array.isArray(next)) {
-      const newItems = next.map((item, index) => ({ ...item, key: items.length + index }))
-      console.log(newItems)
-      setItems([...newItems, ...items])
+      const newItems = next.map((item, index) => ({ ...item, key: keyCounter + index }))
+      setItems(prev => [...newItems, ...prev])
+      setKeyCounter(prev => prev + newItems.length)
     } else {
-      const item = { ...pool[poolIndex], key: items.length }
-      console.log(item)
-      setItems([item, ...items])
+      const item = { ...pool[poolIndex], key: keyCounter }
+      setItems(prev => [item, ...prev])
+      setKeyCounter(prev => prev + 1)
     }
 
-    setPoolIndex(poolIndex + 1)
+    setPoolIndex(prev => prev + 1)
+    lastEventTime = Date.now()
+  }
+
+  const remove = (item, force = false) => {
+    if (!force && Date.now() - lastEventTime < itemDisappearTime) {
+      toRemove = [...toRemove, item]
+    } else {
+      setItems(prev => prev.filter(i => i.key !== item.key))
+      toRemove.forEach(r => {
+        setItems(prev => prev.filter(i => i.key !== r.key))
+      })
+      toRemove = []
+    }
   }
 
   return (
@@ -89,15 +66,8 @@ function App() {
           {
             items.map(item => {
               switch (item.type) {
-                case TYPES.GENERIC: return (
-                    <div key={item.key} className="entry anim-in flex row items-center small">
-                      <span className="">{item.message}</span>
-                      <span className="points">{item.points}</span>
-                      <div className="arrow"></div>
-                    </div>
-                  )
-
-                case TYPES.KILL: return <KillEntry key={item.key} item={item} />
+                case EventType.Generic: return <PointEntry key={item.key} item={item} disappearTime={itemDisappearTime} onHide={remove} />
+                case EventType.Kill: return <KillEntry key={item.key} item={item} disappearTime={itemDisappearTime} onHide={remove} />
               }
             })
           }
