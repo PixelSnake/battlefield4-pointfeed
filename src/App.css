@@ -1,38 +1,138 @@
 .App {
-  text-align: center;
+  margin: 300px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.flex {
+  display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.col {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.items-end {
+  align-items: end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.entry {
+  position: relative;
+  width: 800px;
+  justify-content: end;
+  color: white;
+  font-size: 30px;
+  text-shadow: 0 0 3px white;
+
+  animation: entryIn 200ms linear;
+}
+.entry.small {
+  font-size: 24px;
+}
+.entry.large {
+  font-size: 35px;
+  margin-top: -5px;
+}
+
+.entry.anim-in:before {
+  content: ' ';
+  position: absolute;
+  background: black;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  z-index: 1000;
+
+  animation: entryInMask 400ms linear;
+  animation-delay: 200ms;
+}
+
+@keyframes entryInMask {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@keyframes entryIn {
+  0% {
+    height: 0px;
+    opacity: 0;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    height: 39px;
+  }
 }
 
-.App-link {
-  color: #61dafb;
+.entry>span:not(.noanim), .entry .arrow {
+  animation: popUp 200ms linear;
+  animation-delay: 200ms;
 }
 
-@keyframes App-logo-spin {
+@keyframes popUp {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.kill-reveal {
+  position: relative;
+}
+.kill-reveal:after {
+  content: ' ';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  background: black;
+  animation: killReveal 500ms linear;
+}
+
+@keyframes killReveal {
   from {
-    transform: rotate(0deg);
+    width: 100%;
   }
   to {
-    transform: rotate(360deg);
+    width: 0%;
   }
+}
+
+.points {
+  display: inline-block;
+  width: 62px;
+  text-align: right;
+}
+
+.sum {
+  animation: popUp 200ms linear;
+}
+
+.arrow {
+  display: inline-block;
+  background-image: url(../resources/arrow.png);
+  background-size: contain;
+  width: 32px;
+  height: 32px;
+}
+
+.red {
+  color: #FF7F4A;
+  text-shadow: 0 0 3px #FF8E00;
 }
